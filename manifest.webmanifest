@@ -1,0 +1,10 @@
+{
+  "name": "川西塔公三日自驾",
+  "short_name": "塔公自驾",
+  "description": "成都武侯至塔公草原的三日自驾地图与小时级行程",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#102d28",
+  "theme_color": "#153b34",
+  "lang": "zh-CN"
+}

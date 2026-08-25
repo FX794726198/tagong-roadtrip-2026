@@ -36,23 +36,96 @@ const dayInfo = {
 };
 
 const places = {
-  wuhou: { name: "成都武侯", lat: 30.6442131, lon: 104.0406683, search: "成都武侯区" },
-  yaan: { name: "雅安住宿区", lat: 29.981, lon: 103.003, search: "雅安时代天街亚朵酒店" },
-  kangding: { name: "康定城区", lat: 30.05, lon: 101.961, search: "康定市区" },
-  honghaizi: { name: "红海子", lat: 30.1843367, lon: 101.7753818, search: "康定红海子" },
-  tagong: { name: "塔公寺 / 塔公草原", lat: 30.3214308, lon: 101.5206557, search: "塔公草原" },
-  xinduqiao: { name: "新都桥住宿区", lat: 30.0467, lon: 101.4918, search: "全季酒店康定新都桥G318店" },
-  zheduo: { name: "折多山口", lat: 30.0743411, lon: 101.8040657, search: "折多山口" },
+  wuhou: {
+    name: "成都武侯",
+    lat: 30.6442131,
+    lon: 104.0406683,
+    search: "成都武侯区",
+    kicker: "起点 / 终点",
+    time: "8/28 18:00出发 · 8/30计划16:20返回",
+    altitude: "低海拔",
+    description: "在城区完成加油、饮水和行李整理。返程日把这里当作唯一终点，不再用缓冲时间增加景点。",
+    tips: ["18:00准时出发", "8/30最晚19:00抵达", "返程缓冲约2小时40分"],
+  },
+  yaan: {
+    name: "雅安住宿区",
+    lat: 29.981,
+    lon: 103.003,
+    search: "雅安时代天街亚朵酒店",
+    kicker: "第一晚住宿",
+    time: "8/28 20:30抵达 · 8/29 08:00离开",
+    altitude: "缓升适应",
+    description: "首晚停在雅安，避免夜间继续翻越高山。停车后再步行晚餐，次日早餐、退房、补水一次完成。",
+    tips: ["不加夜间景点", "确认停车与早餐", "晚到提前联系酒店"],
+  },
+  kangding: {
+    name: "康定城区",
+    lat: 30.05,
+    lon: 101.961,
+    search: "康定市区",
+    kicker: "补给与硬截止点",
+    time: "8/29午餐加油 · 8/30 11:30必须离开",
+    altitude: "约2,560 m",
+    description: "上高原前在这里吃午餐并加足油；返程时再次提前午餐。11:30离开康定是守住19:00回成都的关键节点。",
+    tips: ["先吃饭再上高原", "车辆保证充分续航", "返程11:30硬离开"],
+  },
+  honghaizi: {
+    name: "红海子",
+    lat: 30.1843367,
+    lon: 101.7753818,
+    search: "康定红海子",
+    kicker: "天气窗口 / 可删除",
+    time: "8/29约12:50 · 最多25分钟",
+    altitude: "高海拔路段",
+    description: "只有停车位充足、无浓雾且身体状态正常才停。它是当天第一个应删的景点，不能挤占塔公时间。",
+    tips: ["不在行车道边停车", "浓雾或拥堵直接通过", "任何不适立即缩短停留"],
+  },
+  tagong: {
+    name: "塔公寺 / 塔公草原",
+    lat: 30.3214308,
+    lon: 101.5206557,
+    search: "塔公草原",
+    kicker: "核心目的地",
+    time: "8/29 14:10—17:00",
+    altitude: "约3,730 m",
+    image: "./tagong-grassland.webp",
+    description: "先停车休息，再沿草原边缘缓步。把光线好的时间留给草甸、经幡、塔公寺金顶与雅拉雪山方向。",
+    tips: ["每15—20分钟停一次", "骑马先确认总价和时长", "16:40开始往停车点回收"],
+  },
+  xinduqiao: {
+    name: "新都桥住宿区",
+    lat: 30.0467,
+    lon: 101.4918,
+    search: "全季酒店康定新都桥G318店",
+    kicker: "第二晚住宿",
+    time: "8/29约17:55抵达 · 8/30 08:00离开",
+    altitude: "约3,460 m",
+    image: "./xinduqiao.webp",
+    description: "优先办理入住和吃饭。天气好且没有高反时，只在酒店附近正规位置看短暂黄昏，不再远距离追光。",
+    tips: ["优先全季或同档次", "20:00后不再开车", "症状加重立即向康定下撤"],
+  },
+  zheduo: {
+    name: "折多山口",
+    lat: 30.0743411,
+    lon: 101.8040657,
+    search: "折多山口",
+    kicker: "返程观景窗口",
+    time: "8/30约09:15 · 最多25分钟",
+    altitude: "约4,298 m",
+    image: "./zheduo-pass.webp",
+    description: "停车区开放、有空位、能见度正常才停。雨雾、排队或身体不适时直接通过，把时间留给安全下山。",
+    tips: ["出发前重查天气路况", "雨雾直接通过", "长下坡控制车速"],
+  },
 };
 
 const markerStops = [
-  { key: "wuhou", label: "A", days: [1, 3], note: "8/28 18:00出发 · 8/30计划16:20返回" },
-  { key: "yaan", label: "B", days: [1, 2, 3], note: "第一晚住宿 · 返程通过" },
-  { key: "kangding", label: "C", days: [2, 3], note: "午餐、加油与返程硬截止点" },
-  { key: "honghaizi", label: "D", days: [2], note: "天气许可时最多停25分钟" },
-  { key: "tagong", label: "E", days: [2], note: "核心目的地 · 14:10—17:00" },
-  { key: "xinduqiao", label: "F", days: [2, 3], note: "第二晚住宿 · 次日08:00出发" },
-  { key: "zheduo", label: "G", days: [3], note: "最多停25分钟；雨雾直接通过" },
+  { key: "wuhou", label: "1", days: [1, 3], note: "起终点" },
+  { key: "yaan", label: "2", days: [1, 2, 3], note: "第一晚" },
+  { key: "kangding", label: "3", days: [2, 3], note: "补给点" },
+  { key: "honghaizi", label: "4", days: [2], note: "可删景点" },
+  { key: "tagong", label: "5", days: [2], note: "核心目的地" },
+  { key: "xinduqiao", label: "6", days: [2, 3], note: "第二晚" },
+  { key: "zheduo", label: "7", days: [3], note: "短停窗口" },
 ];
 
 const schedule = [
@@ -109,12 +182,25 @@ const schedule = [
   },
 ];
 
-let selectedDay = "all";
+const initialDay = new URLSearchParams(window.location.search).get("day");
+let selectedDay = ["1", "2", "3"].includes(initialDay) ? initialDay : "all";
 let mapMode = "day";
 let map;
-let routeData;
-let routeLayer;
-let markerLayer;
+let routeData = window.ROUTE_DATA || null;
+let allRouteBounds;
+let currentPositionLayer;
+let activeStopKey = null;
+const routeRecords = [];
+const markerByKey = new Map();
+
+function escapeHTML(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function repeatColor(value) {
   if (value <= 30) return "#2f8c68";
@@ -128,21 +214,12 @@ function amapSearch(place) {
 
 function routePopup(properties) {
   return `
-    <strong class="popup-title">${properties.name}</strong>
+    <strong class="popup-title">${escapeHTML(properties.name)}</strong>
     <div class="popup-meta">
-      ${properties.road}<br />
+      ${escapeHTML(properties.road)}<br />
       约 ${properties.distanceKm} km · 行程预算 ${properties.plannedHours} 小时<br />
-      历史轨迹重复约 ${properties.repeatPct}%
+      历史轨迹500米范围重复约 ${properties.repeatPct}%
     </div>
-  `;
-}
-
-function markerPopup(stop) {
-  const place = places[stop.key];
-  return `
-    <strong class="popup-title">${place.name}</strong>
-    <div class="popup-meta">${stop.note}</div>
-    <a class="popup-nav" href="${amapSearch(place)}" target="_blank" rel="noreferrer">在高德地图搜索 →</a>
   `;
 }
 
@@ -151,22 +228,14 @@ function makeMarkerIcon(stop) {
   return L.divIcon({
     className: "route-pin-wrap",
     html: `<div class="route-pin day-${day}"><span>${stop.label}</span></div>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 29],
-    popupAnchor: [0, -30],
+    iconSize: [38, 38],
+    iconAnchor: [19, 34],
+    tooltipAnchor: [0, -27],
   });
 }
 
-function featureStyle(feature) {
-  const p = feature.properties;
-  const color = mapMode === "day" ? dayColors[p.day] : repeatColor(p.repeatPct);
-  return {
-    color,
-    weight: selectedDay === "all" ? 6 : 7,
-    opacity: 0.92,
-    lineCap: "round",
-    lineJoin: "round",
-  };
+function visibleStops() {
+  return markerStops.filter((stop) => selectedDay === "all" || stop.days.includes(Number(selectedDay)));
 }
 
 function renderLegend() {
@@ -177,46 +246,88 @@ function renderLegend() {
       .join("");
   } else {
     legend.innerHTML = `
-      <span class="legend-item"><i class="legend-line" style="background:#2f8c68"></i>重复 ≤30% · 较新</span>
-      <span class="legend-item"><i class="legend-line" style="background:#d39a3d"></i>重复 30—70%</span>
-      <span class="legend-item"><i class="legend-line" style="background:#b7513d"></i>重复 ≥70% · 已走过</span>
+      <span class="legend-item"><i class="legend-line" style="background:#2f8c68"></i>新路 ≤30%</span>
+      <span class="legend-item"><i class="legend-line" style="background:#d39a3d"></i>部分重复</span>
+      <span class="legend-item"><i class="legend-line" style="background:#b7513d"></i>已走过 ≥70%</span>
     `;
   }
 }
 
-function renderMapLayers({ fit = true } = {}) {
-  if (!map || !routeData) return;
+function renderMapStatus() {
+  const info = dayInfo[selectedDay];
+  const count = visibleStops().length;
+  document.getElementById("map-status-label").textContent = info.label;
+  document.getElementById("map-status-meta").textContent = `${info.km} · ${count}个关键节点`;
+}
 
-  if (routeLayer) routeLayer.remove();
-  if (markerLayer) markerLayer.remove();
-
-  routeLayer = L.geoJSON(routeData, {
-    filter: (feature) => selectedDay === "all" || String(feature.properties.day) === selectedDay,
-    style: featureStyle,
-    onEachFeature: (feature, layer) => {
-      layer.bindPopup(routePopup(feature.properties));
-      layer.on({
-        mouseover: () => layer.setStyle({ weight: 10, opacity: 1 }),
-        mouseout: () => routeLayer.resetStyle(layer),
-      });
-    },
-  }).addTo(map);
-
-  markerLayer = L.layerGroup();
-  markerStops
-    .filter((stop) => selectedDay === "all" || stop.days.includes(Number(selectedDay)))
-    .forEach((stop) => {
+function renderStopStrip() {
+  const strip = document.getElementById("map-stop-strip");
+  strip.innerHTML = visibleStops()
+    .map((stop) => {
       const place = places[stop.key];
-      L.marker([place.lat, place.lon], { icon: makeMarkerIcon(stop), title: place.name })
-        .bindPopup(markerPopup(stop))
-        .addTo(markerLayer);
-    });
-  markerLayer.addTo(map);
+      return `
+        <button type="button" data-map-stop="${stop.key}" class="${activeStopKey === stop.key ? "is-active" : ""}">
+          <span>${stop.label}</span>
+          <strong>${escapeHTML(place.name)}</strong>
+          <small>${escapeHTML(stop.note)}</small>
+        </button>
+      `;
+    })
+    .join("");
+  strip.querySelectorAll("[data-map-stop]").forEach((button) => {
+    button.addEventListener("click", () => openPlace(button.dataset.mapStop));
+  });
+}
 
-  if (fit && routeLayer.getBounds().isValid()) {
-    map.fitBounds(routeLayer.getBounds(), { padding: [28, 28], maxZoom: selectedDay === "all" ? 8 : 10 });
-  }
+function getActiveBounds() {
+  const records = routeRecords.filter(
+    (record) => selectedDay === "all" || String(record.properties.day) === selectedDay,
+  );
+  if (!records.length) return allRouteBounds;
+  const bounds = L.latLngBounds([]);
+  records.forEach((record) => bounds.extend(record.route.getBounds()));
+  return bounds;
+}
+
+function fitActiveRoute() {
+  if (!map) return;
+  const bounds = getActiveBounds();
+  if (!bounds?.isValid()) return;
+  map.fitBounds(bounds, {
+    paddingTopLeft: [28, 96],
+    paddingBottomRight: [28, 112],
+    maxZoom: selectedDay === "all" ? 8 : 10,
+  });
+}
+
+function updateMapLayers({ fit = false } = {}) {
+  if (!map || !routeRecords.length) return;
+  routeRecords.forEach((record) => {
+    const isSelected = selectedDay === "all" || String(record.properties.day) === selectedDay;
+    const color = mapMode === "day"
+      ? dayColors[record.properties.day]
+      : repeatColor(record.properties.repeatPct);
+    record.route.setStyle({
+      color,
+      weight: isSelected ? 6 : 3,
+      opacity: isSelected ? 0.96 : 0.11,
+    });
+    record.outline.setStyle({
+      weight: isSelected ? 10 : 6,
+      opacity: isSelected ? 0.76 : 0.02,
+    });
+    if (isSelected) record.route.bringToFront();
+  });
+  markerStops.forEach((stop) => {
+    const isSelected = selectedDay === "all" || stop.days.includes(Number(selectedDay));
+    const marker = markerByKey.get(stop.key);
+    marker?.setOpacity(isSelected ? 1 : 0.16);
+    marker?.setZIndexOffset(isSelected ? 500 : 0);
+  });
   renderLegend();
+  renderMapStatus();
+  renderStopStrip();
+  if (fit) fitActiveRoute();
 }
 
 function renderSummary() {
@@ -252,7 +363,7 @@ function renderTimeline() {
                       <p>${event.detail}</p>
                       ${
                         place
-                          ? `<button class="event-map" type="button" data-day="${day.day}" data-lat="${place.lat}" data-lon="${place.lon}" data-zoom="${event.place === "wuhou" ? 12 : 13}">地图定位 ↗</button>`
+                          ? `<button class="event-map" type="button" data-day="${day.day}" data-place="${event.place}" data-lat="${place.lat}" data-lon="${place.lon}" data-zoom="${event.place === "wuhou" ? 12 : 13}">地图定位 ↗</button>`
                           : ""
                       }
                     </div>
@@ -271,7 +382,7 @@ function renderTimeline() {
     button.addEventListener("click", () => {
       const day = button.dataset.day;
       if (selectedDay !== day) setSelectedDay(day, false);
-      focusMap(Number(button.dataset.lat), Number(button.dataset.lon), Number(button.dataset.zoom));
+      focusMap(Number(button.dataset.lat), Number(button.dataset.lon), Number(button.dataset.zoom), button.dataset.place);
     });
   });
 }
@@ -285,19 +396,106 @@ function updateDayButtons() {
 }
 
 function setSelectedDay(day, fit = true) {
-  selectedDay = String(day);
+  selectedDay = ["1", "2", "3"].includes(String(day)) ? String(day) : "all";
   updateDayButtons();
   renderSummary();
   renderTimeline();
-  renderMapLayers({ fit });
+  updateMapLayers({ fit });
+  const url = new URL(window.location.href);
+  if (selectedDay === "all") url.searchParams.delete("day");
+  else url.searchParams.set("day", selectedDay);
+  url.searchParams.delete("stop");
+  history.replaceState({}, "", url);
 }
 
-function focusMap(lat, lon, zoom = 13) {
+function focusMap(lat, lon, zoom = 13, placeKey = null) {
   if (!map) return;
-  document.getElementById("route").scrollIntoView({ behavior: "smooth", block: "start" });
+  if (!document.querySelector(".map-card.is-map-fullscreen")) {
+    document.getElementById("route").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
   window.setTimeout(() => {
     map.flyTo([lat, lon], zoom, { duration: 0.9 });
+    if (placeKey) openPlace(placeKey, { move: false });
   }, 280);
+}
+
+function openPlace(key, options = {}) {
+  const place = places[key];
+  const stop = markerStops.find((item) => item.key === key);
+  if (!place || !stop) return;
+  activeStopKey = key;
+  renderStopStrip();
+  const drawer = document.getElementById("map-place-drawer");
+  const backdrop = document.getElementById("map-drawer-backdrop");
+  document.getElementById("map-drawer-content").innerHTML = `
+    ${place.image ? `<img class="map-drawer-image" src="${place.image}" alt="${escapeHTML(place.name)}" />` : `<div class="map-drawer-placeholder"><span>${stop.label}</span></div>`}
+    <div class="map-drawer-body">
+      <div class="map-drawer-eyebrow"><span>节点 ${stop.label}</span><span>${escapeHTML(place.kicker)}</span></div>
+      <h3>${escapeHTML(place.name)}</h3>
+      <div class="map-drawer-metrics"><span>${escapeHTML(place.time)}</span><span>${escapeHTML(place.altitude)}</span></div>
+      <p>${escapeHTML(place.description)}</p>
+      <ul>${place.tips.map((tip) => `<li>${escapeHTML(tip)}</li>`).join("")}</ul>
+      <div class="map-drawer-actions">
+        <a href="${amapSearch(place)}" target="_blank" rel="noreferrer">高德导航 ↗</a>
+        <button type="button" data-drawer-day="${stop.days[0]}">查看当天行程</button>
+      </div>
+    </div>
+  `;
+  backdrop.hidden = false;
+  drawer.setAttribute("aria-hidden", "false");
+  document.body.classList.add("map-drawer-open");
+  requestAnimationFrame(() => drawer.classList.add("is-open"));
+  drawer.querySelector("[data-drawer-day]").addEventListener("click", (event) => {
+    setSelectedDay(event.currentTarget.dataset.drawerDay, true);
+    closePlaceDrawer();
+    document.getElementById("timeline").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  if (options.move !== false && map) map.flyTo([place.lat, place.lon], key === "wuhou" ? 12 : 13, { duration: 0.8 });
+  const url = new URL(window.location.href);
+  url.searchParams.set("stop", key);
+  history.replaceState({}, "", url);
+}
+
+function closePlaceDrawer() {
+  const drawer = document.getElementById("map-place-drawer");
+  const backdrop = document.getElementById("map-drawer-backdrop");
+  drawer.classList.remove("is-open");
+  drawer.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("map-drawer-open");
+  activeStopKey = null;
+  renderStopStrip();
+  window.setTimeout(() => { backdrop.hidden = true; }, 260);
+  const url = new URL(window.location.href);
+  url.searchParams.delete("stop");
+  history.replaceState({}, "", url);
+}
+
+function createTileLayers() {
+  const imagery = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      maxZoom: 19,
+      attribution: "Tiles © Esri — Sources: Esri, Maxar, Earthstar Geographics",
+    },
+  );
+  const labels = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+    { maxZoom: 19, attribution: "Labels © Esri" },
+  );
+  const terrain = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+    { maxZoom: 19, attribution: "Topographic map © Esri" },
+  );
+  const roads = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap contributors",
+  });
+  return {
+    satellite: L.layerGroup([imagery, labels]),
+    terrain,
+    roads,
+    routeOnly: L.layerGroup(),
+  };
 }
 
 async function initMap() {
@@ -306,22 +504,120 @@ async function initMap() {
     return;
   }
 
-  map = L.map("map", { zoomControl: true, scrollWheelZoom: false, preferCanvas: true }).setView([30.25, 102.5], 8);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
+  map = L.map("map", {
+    center: [30.25, 102.5],
+    zoom: 8,
+    zoomControl: false,
+    scrollWheelZoom: false,
+    preferCanvas: true,
+  });
+  map.createPane("routeOutlinePane");
+  map.getPane("routeOutlinePane").style.zIndex = 410;
+  map.createPane("routePane");
+  map.getPane("routePane").style.zIndex = 420;
+  map.createPane("markerPaneTop");
+  map.getPane("markerPaneTop").style.zIndex = 640;
+
+  const tiles = createTileLayers();
+  tiles.satellite.addTo(map);
+  L.control.zoom({ position: "bottomright" }).addTo(map);
+  L.control.layers(
+    {
+      "卫星影像 + 地名": tiles.satellite,
+      "地形图": tiles.terrain,
+      "道路图": tiles.roads,
+      "仅看路线（最快）": tiles.routeOnly,
+    },
+    {},
+    { position: "topright", collapsed: window.innerWidth < 760 },
+  ).addTo(map);
 
   try {
-    const response = await fetch("./routes.json");
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    routeData = await response.json();
-    renderMapLayers();
+    if (!routeData) {
+      const response = await fetch("./routes.json");
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      routeData = await response.json();
+    }
+    const bounds = L.latLngBounds([]);
+    routeData.features.forEach((feature) => {
+      const coordinates = feature.geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+      bounds.extend(coordinates);
+      const outline = L.polyline(coordinates, {
+        pane: "routeOutlinePane",
+        color: "#ffffff",
+        weight: 10,
+        opacity: 0.76,
+        interactive: false,
+        lineCap: "round",
+        lineJoin: "round",
+      }).addTo(map);
+      const route = L.polyline(coordinates, {
+        pane: "routePane",
+        color: dayColors[feature.properties.day],
+        weight: 6,
+        opacity: 0.96,
+        lineCap: "round",
+        lineJoin: "round",
+      })
+        .bindTooltip(`Day ${feature.properties.day} · ${escapeHTML(feature.properties.name)} · ${feature.properties.distanceKm} km`, {
+          sticky: true,
+          className: "route-tooltip",
+        })
+        .bindPopup(routePopup(feature.properties))
+        .addTo(map);
+      route.on("mouseover", () => route.setStyle({ weight: 9, opacity: 1 }));
+      route.on("mouseout", () => updateMapLayers());
+      routeRecords.push({ properties: feature.properties, route, outline });
+    });
+    markerStops.forEach((stop) => {
+      const place = places[stop.key];
+      const marker = L.marker([place.lat, place.lon], {
+        icon: makeMarkerIcon(stop),
+        pane: "markerPaneTop",
+        title: place.name,
+      })
+        .bindTooltip(`${stop.label}. ${escapeHTML(place.name)} · ${escapeHTML(stop.note)}`, {
+          direction: "top",
+          className: "route-tooltip",
+          offset: [0, -24],
+        })
+        .on("click", () => openPlace(stop.key))
+        .addTo(map);
+      markerByKey.set(stop.key, marker);
+    });
+    allRouteBounds = bounds;
+    updateMapLayers({ fit: true });
     document.getElementById("map-loading").classList.add("hidden");
   } catch (error) {
     console.error(error);
     document.getElementById("map-loading").textContent = "路线数据未能载入，请刷新页面；小时级行程仍可使用。";
   }
+
+  map.on("locationfound", (event) => {
+    currentPositionLayer?.remove();
+    currentPositionLayer = L.circleMarker(event.latlng, {
+      radius: 9,
+      color: "#ffffff",
+      weight: 4,
+      fillColor: "#1587c8",
+      fillOpacity: 1,
+    }).bindTooltip("你的位置").addTo(map);
+  });
+  map.on("locationerror", () => window.alert("无法获取位置，请检查手机浏览器的定位权限。"));
+}
+
+function toggleMapFullscreen() {
+  const card = document.querySelector(".map-card");
+  const button = document.getElementById("fullscreen-map");
+  const active = !card.classList.contains("is-map-fullscreen");
+  card.classList.toggle("is-map-fullscreen", active);
+  document.body.classList.toggle("map-fullscreen-open", active);
+  button.textContent = active ? "退出" : "全屏";
+  button.setAttribute("aria-pressed", String(active));
+  window.setTimeout(() => {
+    map?.invalidateSize();
+    fitActiveRoute();
+  }, 120);
 }
 
 function initControls() {
@@ -337,7 +633,7 @@ function initControls() {
         item.classList.toggle("active", active);
         item.setAttribute("aria-pressed", String(active));
       });
-      renderMapLayers({ fit: false });
+      updateMapLayers({ fit: false });
     });
   });
 
@@ -345,6 +641,19 @@ function initControls() {
     button.addEventListener("click", () => focusMap(Number(button.dataset.lat), Number(button.dataset.lon), Number(button.dataset.zoom)));
   });
 
+  document.getElementById("fit-route").addEventListener("click", fitActiveRoute);
+  document.getElementById("locate-me").addEventListener("click", () => {
+    if (!map) return;
+    map.locate({ setView: true, maxZoom: 13, enableHighAccuracy: true });
+  });
+  document.getElementById("fullscreen-map").addEventListener("click", toggleMapFullscreen);
+  document.getElementById("map-drawer-close").addEventListener("click", closePlaceDrawer);
+  document.getElementById("map-drawer-backdrop").addEventListener("click", closePlaceDrawer);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (document.getElementById("map-place-drawer").classList.contains("is-open")) closePlaceDrawer();
+    else if (document.querySelector(".map-card.is-map-fullscreen")) toggleMapFullscreen();
+  });
   document.getElementById("print-plan").addEventListener("click", () => window.print());
 }
 
@@ -369,8 +678,20 @@ function initChecklist() {
   });
 }
 
-renderSummary();
-renderTimeline();
-initControls();
-initChecklist();
-initMap();
+async function init() {
+  updateDayButtons();
+  renderSummary();
+  renderTimeline();
+  renderMapStatus();
+  renderStopStrip();
+  initControls();
+  initChecklist();
+  await initMap();
+  const stop = new URLSearchParams(window.location.search).get("stop");
+  if (stop && places[stop]) openPlace(stop);
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+  }
+}
+
+init();
