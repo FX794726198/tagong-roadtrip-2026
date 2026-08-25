@@ -192,6 +192,7 @@ let currentPositionLayer;
 let activeStopKey = null;
 const routeRecords = [];
 const markerByKey = new Map();
+const dayRouteOffsets = { 1: -5.5, 2: 0, 3: 5.5 };
 
 function escapeHTML(value = "") {
   return String(value)
@@ -242,8 +243,10 @@ function renderLegend() {
   const legend = document.getElementById("map-legend");
   if (mapMode === "day") {
     legend.innerHTML = [1, 2, 3]
-      .map((day) => `<span class="legend-item"><i class="legend-line" style="background:${dayColors[day]}"></i>Day ${day}</span>`)
-      .join("");
+      .map((day) => `<span class="legend-item"><i class="legend-line${day === 3 ? " is-return" : ""}" style="--legend-color:${dayColors[day]}"></i>Day ${day}${day === 3 ? " · 返程" : ""}</span>`)
+      .join("") + (selectedDay === "all"
+        ? '<span class="legend-note">重合路段已左右分轨；蓝色虚线表示返程，位置偏移仅用于辨认</span>'
+        : "");
   } else {
     legend.innerHTML = `
       <span class="legend-item"><i class="legend-line" style="background:#2f8c68"></i>新路 ≤30%</span>
@@ -257,7 +260,7 @@ function renderMapStatus() {
   const info = dayInfo[selectedDay];
   const count = visibleStops().length;
   document.getElementById("map-status-label").textContent = info.label;
-  document.getElementById("map-status-meta").textContent = `${info.km} · ${count}个关键节点`;
+  document.getElementById("map-status-meta").textContent = `${info.km} · ${count}个关键节点${selectedDay === "all" ? " · 重合段已分轨" : ""}`;
 }
 
 function renderStopStrip() {
@@ -289,6 +292,63 @@ function getActiveBounds() {
   return bounds;
 }
 
+function canonicalCoordinates(latLngs) {
+  const first = latLngs[0];
+  const last = latLngs[latLngs.length - 1];
+  const reverse = first.lat > last.lat || (first.lat === last.lat && first.lng > last.lng);
+  return { coordinates: reverse ? [...latLngs].reverse() : latLngs, reverse };
+}
+
+function offsetCoordinates(latLngs, offsetPixels) {
+  if (!map || !offsetPixels || latLngs.length < 2) return latLngs;
+  const oriented = canonicalCoordinates(latLngs);
+  const zoom = map.getZoom();
+  const points = oriented.coordinates.map((latLng) => map.project(latLng, zoom));
+  const normals = [];
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const dx = points[index + 1].x - points[index].x;
+    const dy = points[index + 1].y - points[index].y;
+    const length = Math.hypot(dx, dy) || 1;
+    normals.push({ x: -dy / length, y: dx / length });
+  }
+
+  const shifted = points.map((point, index) => {
+    const previous = normals[Math.max(0, index - 1)];
+    const next = normals[Math.min(normals.length - 1, index)];
+    let nx = previous.x + next.x;
+    let ny = previous.y + next.y;
+    let normalLength = Math.hypot(nx, ny);
+    if (normalLength < 0.15) {
+      nx = next.x;
+      ny = next.y;
+      normalLength = 1;
+    }
+    nx /= normalLength;
+    ny /= normalLength;
+    const denominator = Math.max(0.35, Math.abs(nx * next.x + ny * next.y));
+    const miter = Math.sign(offsetPixels) * Math.min(
+      Math.abs(offsetPixels / denominator),
+      Math.abs(offsetPixels) * 2,
+    );
+    return map.unproject(L.point(point.x + nx * miter, point.y + ny * miter), zoom);
+  });
+
+  return oriented.reverse ? shifted.reverse() : shifted;
+}
+
+function applyRouteOffsets(force = false) {
+  if (!map) return;
+  routeRecords.forEach((record) => {
+    const offset = selectedDay === "all" ? dayRouteOffsets[record.properties.day] : 0;
+    const key = `${map.getZoom()}:${offset}`;
+    if (!force && record.offsetKey === key) return;
+    record.route.setLatLngs(offsetCoordinates(record.originalCoordinates, offset));
+    record.outline.setLatLngs(offsetCoordinates(record.originalCoordinates, offset));
+    record.offsetKey = key;
+  });
+}
+
 function fitActiveRoute() {
   if (!map) return;
   const bounds = getActiveBounds();
@@ -302,6 +362,8 @@ function fitActiveRoute() {
 
 function updateMapLayers({ fit = false } = {}) {
   if (!map || !routeRecords.length) return;
+  applyRouteOffsets();
+  const allDays = selectedDay === "all";
   routeRecords.forEach((record) => {
     const isSelected = selectedDay === "all" || String(record.properties.day) === selectedDay;
     const color = mapMode === "day"
@@ -309,12 +371,13 @@ function updateMapLayers({ fit = false } = {}) {
       : repeatColor(record.properties.repeatPct);
     record.route.setStyle({
       color,
-      weight: isSelected ? 6 : 3,
+      weight: isSelected ? (allDays ? 4.5 : 6) : 3,
       opacity: isSelected ? 0.96 : 0.11,
+      dashArray: allDays && record.properties.day === 3 ? "11 7" : "",
     });
     record.outline.setStyle({
-      weight: isSelected ? 10 : 6,
-      opacity: isSelected ? 0.76 : 0.02,
+      weight: isSelected ? (allDays ? 7 : 10) : 6,
+      opacity: isSelected ? (allDays ? 0.62 : 0.76) : 0.02,
     });
     if (isSelected) record.route.bringToFront();
   });
@@ -540,7 +603,7 @@ async function initMap() {
     }
     const bounds = L.latLngBounds([]);
     routeData.features.forEach((feature) => {
-      const coordinates = feature.geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+      const coordinates = feature.geometry.coordinates.map(([lon, lat]) => L.latLng(lat, lon));
       bounds.extend(coordinates);
       const outline = L.polyline(coordinates, {
         pane: "routeOutlinePane",
@@ -567,7 +630,7 @@ async function initMap() {
         .addTo(map);
       route.on("mouseover", () => route.setStyle({ weight: 9, opacity: 1 }));
       route.on("mouseout", () => updateMapLayers());
-      routeRecords.push({ properties: feature.properties, route, outline });
+      routeRecords.push({ properties: feature.properties, route, outline, originalCoordinates: coordinates, offsetKey: null });
     });
     markerStops.forEach((stop) => {
       const place = places[stop.key];
@@ -604,6 +667,7 @@ async function initMap() {
     }).bindTooltip("你的位置").addTo(map);
   });
   map.on("locationerror", () => window.alert("无法获取位置，请检查手机浏览器的定位权限。"));
+  map.on("zoomend", () => applyRouteOffsets(true));
 }
 
 function toggleMapFullscreen() {

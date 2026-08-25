@@ -1,9 +1,9 @@
-const CACHE_NAME = "tagong-roadtrip-shell-v3";
+const CACHE_NAME = "tagong-roadtrip-shell-v4";
 const CORE_ASSETS = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./app.js",
+  "./styles.css?v=4",
+  "./app.js?v=4",
   "./routes.js",
   "./assets/vendor/leaflet.css",
   "./assets/vendor/leaflet.js",
